@@ -50,7 +50,6 @@ string response = await tlsClient.SendRequestAsync(request, TimeSpan.FromSeconds
 ### What's Missing?
 
 While TlsClient provides a solid foundation for establishing TLS connections, there are a few notable missing features:
-- !!! It's too much broken to be used in production.
 - It's not a full-fledged HTTP client: TlsClient is primarily focused on establishing TLS connections and sending raw HTTP requests. It does not provide high-level features like automatic redirection, cookie management, or response parsing.
 - HTTP/2 Support: The current implementation only supports HTTP/1.1 as the application protocol. Adding support for HTTP/2 would be a valuable addition.
 - Automatic Certificate Management: The library currently requires manual management of client certificates. Implementing automatic certificate retrieval and renewal would enhance usability.
