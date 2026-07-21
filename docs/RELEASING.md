@@ -47,8 +47,8 @@ on Ubuntu with the SDK and tool manifest pinned in the repository:
 Create the tag only after all branch checks pass:
 
 ```bash
-git tag -a v0.5.0-preview.1 -m "TlsClient 0.5.0-preview.1"
-git push origin v0.5.0-preview.1
+git tag -a v0.6.0-preview.1 -m "TlsClient 0.6.0-preview.1"
+git push origin v0.6.0-preview.1
 ```
 
 The `nuget` GitHub environment must restrict deployers and expose a scoped,
@@ -68,7 +68,7 @@ Download the exact artifacts uploaded by the workflow and compare them with the
 NuGet download. Then verify provenance:
 
 ```bash
-gh attestation verify TlsClient.0.5.0-preview.1.nupkg \
+gh attestation verify TlsClient.0.6.0-preview.1.nupkg \
   --repo danikishin/TlsClient
 ```
 

@@ -60,6 +60,48 @@ public sealed class TlsSessionLoopbackTests
     }
 
     [Fact]
+    public async Task Session_ExplicitlyBypassesUntrustedServerCertificateValidation()
+    {
+        Assert.False(new TlsSessionOptions().DangerouslySkipServerCertificateValidation);
+
+        using var certificates = TestCertificates.Create();
+        using var serverCredential = new TlsServerCertificate(
+            certificates.Leaf,
+            [certificates.Root]);
+        using var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+
+        var serverTask = RunSingleResponseServerAsync(
+            listener,
+            serverCredential,
+            timeout.Token);
+        var configureTlsObservedBypass = false;
+        var options = new TlsSessionOptions
+        {
+            Profile = TlsProfiles.Modern,
+            HttpVersionPolicy = TlsHttpVersionPolicy.Http11Only,
+            DangerouslySkipServerCertificateValidation = true,
+            ConfigureTls = tls =>
+            {
+                configureTlsObservedBypass = tls.CertificateValidation
+                    .DangerouslySkipServerCertificateValidation;
+            },
+        };
+        await using var session = new TlsSession(options);
+
+        var response = await session.GetAsync(
+            $"https://127.0.0.1:{port}/dangerous-validation-bypass",
+            timeout.Token);
+        await serverTask;
+
+        Assert.True(configureTlsObservedBypass);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal("proxy", response.Text);
+    }
+
+    [Fact]
     public async Task Session_TunnelsSharpTlsThroughHttpConnectProxy()
     {
         using var certificates = TestCertificates.Create();

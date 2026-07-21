@@ -148,13 +148,20 @@ public sealed class TlsSessionOptions
     /// <summary>Gets additional certificate SPKI pins.</summary>
     public TlsCertificatePins CertificatePins { get; } = new();
 
+    /// <summary>
+    /// Gets or sets whether SharpTls bypasses server certificate-chain and hostname
+    /// validation. The secure default is <see langword="false"/>. Enable this only for
+    /// controlled testing because it permits active man-in-the-middle attacks.
+    /// TLS CertificateVerify and configured <see cref="CertificatePins"/> remain enforced.
+    /// </summary>
+    public bool DangerouslySkipServerCertificateValidation { get; set; }
+
     /// <summary>Gets caller-owned SharpTls client-certificate selection policy.</summary>
     public TlsClientCertificates ClientCertificates { get; } = new();
 
     /// <summary>
     /// Gets or sets an advanced SharpTls hook invoked for every new connection after
-    /// session defaults are applied. The pinned SharpTls version does not expose
-    /// trust-validation bypass.
+    /// session defaults are applied.
     /// </summary>
     public Action<CustomTlsClientOptions>? ConfigureTls { get; set; }
 
@@ -309,6 +316,7 @@ public sealed class TlsSessionOptions
             HandshakeObserver,
             headerOrder,
             CertificatePins.Snapshot(),
+            DangerouslySkipServerCertificateValidation,
             ClientCertificates.Snapshot(),
             DefaultHeaders.Snapshot(),
             ConfigureTls);
@@ -346,6 +354,7 @@ internal sealed record TlsSessionConfiguration(
     Action<TlsHandshakeDiagnostic>? HandshakeObserver,
     string[] HeaderOrder,
     TlsCertificatePins CertificatePins,
+    bool DangerouslySkipServerCertificateValidation,
     TlsClientCertificateConfiguration ClientCertificates,
     HeaderEntry[] DefaultHeaders,
     Action<CustomTlsClientOptions>? ConfigureTls);

@@ -173,6 +173,8 @@ internal sealed class SharpTlsTransport : IAsyncDisposable
                 ClientHello = configuration.Profile.GetClientHello(origin.IdnHost, versionPolicy),
                 TcpNoDelay = true,
             };
+            tlsOptions.CertificateValidation.DangerouslySkipServerCertificateValidation =
+                configuration.DangerouslySkipServerCertificateValidation;
             configuration.ConfigureTls?.Invoke(tlsOptions);
             configuration.ClientCertificates.Apply(tlsOptions);
             if (tlsOptions.SessionCache is null && tlsOptions.ClientHello.Spec.SupportsSessionResumption)
@@ -311,6 +313,8 @@ internal sealed class SharpTlsTransport : IAsyncDisposable
             ClientHello = configuration.Profile.ClientHello,
             TcpNoDelay = true,
         };
+        tlsOptions.CertificateValidation.DangerouslySkipServerCertificateValidation =
+            configuration.DangerouslySkipServerCertificateValidation;
         configuration.ConfigureTls?.Invoke(tlsOptions);
         configuration.ClientCertificates.Apply(tlsOptions);
         if (tlsOptions.SessionCache is null && tlsOptions.ClientHello.Spec.SupportsSessionResumption)
@@ -531,6 +535,8 @@ internal sealed class SharpTlsTransport : IAsyncDisposable
                     versionPolicy),
                 TcpNoDelay = true,
             };
+            tlsOptions.CertificateValidation.DangerouslySkipServerCertificateValidation =
+                configuration.DangerouslySkipServerCertificateValidation;
             configuration.ConfigureTls?.Invoke(tlsOptions);
             configuration.ClientCertificates.Apply(tlsOptions);
             if (tlsOptions.SessionCache is null && tlsOptions.ClientHello.Spec.SupportsSessionResumption)

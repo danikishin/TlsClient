@@ -13,8 +13,8 @@ with the convenience of Python-Tls-Client and a smaller, strongly typed API.
 - **SharpTls is the only TLS engine.** No `SslStream`, OpenSSL, BoringSSL, P/Invoke,
   subprocess, or platform TLS fallback.
 - **Secure by default.** Certificate and hostname validation are enabled by default.
-  Explicit custom-validation or disable controls will be surfaced only through a
-  supported SharpTls API, with no second TLS implementation inside TlsClient.
+  The explicit dangerous bypass delegates to SharpTls and never creates a second TLS
+  implementation inside TlsClient.
 - **Easy first request, deep escape hatches.** The common path is a three-line
   `TlsSession`; advanced callers can supply any SharpTls `ClientHelloProfile` and
   configure the underlying `CustomTlsClientOptions`.
@@ -154,12 +154,13 @@ a direct client run.)
   pooling, proxy, cookie, and redirect logic. The reviewed scope, resolved findings,
   regression tests, and release evidence are recorded in `docs/PROTOCOL-REVIEW.md`.
 
-## Dependency-gated follow-up
+## Completed dependency-gated follow-up
 
-- [ ] Expose SharpTls-backed custom certificate/hostname validation, including an
-  explicit unsafe disable option, after SharpTls publishes the required managed API.
-  This is not a gate for `0.5.0-preview.1`; TlsClient will not emulate it outside the
-  TLS engine in the meantime.
+- [x] Pin SharpTls `0.9.0-preview.5` and expose its server certificate/hostname
+  validation bypass as the deliberately named
+  `DangerouslySkipServerCertificateValidation` session option. Secure validation stays
+  enabled by default, the advanced SharpTls validation policy remains available through
+  `ConfigureTls`, and TlsClient certificate pins remain enforced during bypass.
 
 ## Explicit non-goals
 

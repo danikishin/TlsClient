@@ -1,7 +1,7 @@
 # HTTP/3 transport-readiness evaluation
 
 Decision date: 2026-07-21
-Decision for: TlsClient `0.5.0-preview` with SharpTls `0.9.0-preview.4`
+Decision for: TlsClient `0.6.0-preview` with SharpTls `0.9.0-preview.5`
 Outcome: **deferred; HTTP/3 is not implemented or advertised**
 
 ## Why the current components are insufficient

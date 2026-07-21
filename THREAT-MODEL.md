@@ -85,15 +85,17 @@ Application/operator-controlled inputs include request URLs and bodies, default 
 per-request headers, proxy credentials, custom resolver answers, trust roots, pins,
 client certificates, callbacks, limits, retry opt-ins, and arbitrary SharpTls changes
 made through `ConfigureTls`. Repository/developer-controlled inputs include source,
-project files, dependencies, CI actions, package metadata, and release secrets.
+project files, dependencies, CI actions, package metadata, and release secrets. The
+explicit dangerous server-validation bypass is also application/operator-controlled.
 
 ### Security invariants
 
 - Only `https://` is accepted. No native/platform TLS fallback, plaintext origin mode,
   HTTP/3 claim, or silent ALPN/HTTP-version downgrade is allowed.
-- Normal certificate-chain and hostname validation cannot be bypassed by TlsClient.
-  Pins can only make acceptance stricter. The original origin identity survives proxy
-  and ECH alternative routing.
+- Certificate-chain and hostname validation are enabled by default. Only the explicit
+  dangerous caller option or the advanced SharpTls hook can bypass them; pins remain
+  enforced but do not recreate skipped PKIX checks. The original origin identity
+  survives proxy and ECH alternative routing.
 - A connection is pooled only into the matching origin, HTTP policy, proxy endpoint,
   proxy credential identity, and relevant configuration partition. HTTP/2 stream state
   and cancellation remain isolated.
@@ -185,9 +187,10 @@ do not redefine trust identity.
 ### Certificates, client authentication, and resumption
 
 The most damaging failures would accept an invalid server identity, send a client
-certificate to the wrong origin, weaken normal validation while pinning, or import
-tampered tickets. SharpTls performs mandatory chain/hostname validation; the pin hook
-runs afterward. Exact and one-label wildcard selection precede a caller-owned default;
+certificate to the wrong origin, weaken normal validation unintentionally, or import
+tampered tickets. SharpTls performs chain/hostname validation by default; only explicit
+dangerous caller configuration bypasses it, while the pin hook still runs. Exact and
+one-label wildcard selection precede a caller-owned default;
 configuration conflicts fail rather than guessing precedence. Credentials remain
 caller-owned. Session export requires authenticated encryption and atomic import, with
 key rotation controlled by the caller. TLS 1.2 state is not persisted because SharpTls

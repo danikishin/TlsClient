@@ -11,7 +11,7 @@ body:
     id: version
     attributes:
       label: TlsClient and SharpTls versions
-      placeholder: TlsClient 0.5.0-preview.1, SharpTls 0.9.0-preview.4
+      placeholder: TlsClient 0.6.0-preview.1, SharpTls 0.9.0-preview.5
     validations:
       required: true
   - type: input

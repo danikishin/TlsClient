@@ -29,8 +29,8 @@ There is no `SslStream`, native TLS library, P/Invoke, helper process, or opaque
 binary in this package.
 
 > [!IMPORTANT]
-> `0.5.0-preview.1` implements the complete 0.5 roadmap, including HTTP/2,
-> hostile-peer bounds, fuzz/performance gates, and reproducible release artifacts.
+> `0.6.0-preview.1` adds explicit SharpTls-backed certificate validation controls to
+> the complete managed HTTP/1.1 and HTTP/2 stack.
 > Preview status means the public API may still change before `1.0.0`; it does not mean
 > protocol validation or certificate security is disabled.
 
@@ -64,9 +64,9 @@ Your application
 
 | | |
 |---|---|
-| Current version | `0.5.0-preview.1` |
+| Current version | `0.6.0-preview.1` |
 | Runtime | .NET 9 |
-| TLS engine | `SharpTls 0.9.0-preview.4` (exact NuGet dependency) |
+| TLS engine | `SharpTls 0.9.0-preview.5` (exact NuGet dependency) |
 | HTTP | Managed HTTP/1.1 and HTTP/2 |
 | Platforms | Linux, macOS, and Windows |
 | License | MIT |
@@ -82,10 +82,10 @@ Start with the [quick-start sample](samples/TlsClient.QuickStart/Program.cs), br
 ## Install
 
 ```shell
-dotnet add package TlsClient --version 0.5.0-preview.1
+dotnet add package TlsClient --version 0.6.0-preview.1
 ```
 
-TlsClient currently targets .NET 9 and pins `SharpTls 0.9.0-preview.4`.
+TlsClient currently targets .NET 9 and pins `SharpTls 0.9.0-preview.5`.
 
 ## Quick start
 
@@ -362,13 +362,27 @@ authenticates and encrypts the complete blob; TlsClient never exposes plaintext 
 or owns persistence keys. Key rotation and ownership rules are in
 [docs/SESSION-PERSISTENCE.md](docs/SESSION-PERSISTENCE.md).
 
-## Client certificates and pins
+## Server validation, client certificates, and pins
+
+SharpTls validates the server certificate chain and hostname by default. For controlled
+local testing only, the bypass is deliberately long and explicit:
+
+```csharp
+var options = TlsPresets.Chrome133.CreateOptions();
+options.DangerouslySkipServerCertificateValidation = true;
+
+await using var testSession = new TlsSession(options);
+```
+
+This permits active man-in-the-middle attacks and must not be enabled in production.
+TLS `CertificateVerify` is still authenticated, and any configured TlsClient SPKI pins
+remain enforced. The complete SharpTls chain, revocation, trust-root, and evidence policy
+is available through `ConfigureTls`. See [docs/CERTIFICATES.md](docs/CERTIFICATES.md).
 
 `TlsSessionOptions.ClientCertificates` selects caller-owned SharpTls credentials by exact
 host, wildcard, fallback, or the complete asynchronous SharpTls selector. Server SPKI pins
 accept either `sha256/base64` text or an `X509Certificate2`; they are additional checks and
-never bypass normal trust/hostname validation. See
-[docs/CERTIFICATES.md](docs/CERTIFICATES.md).
+never enable the dangerous bypass themselves.
 
 ## Handshake diagnostics and OpenTelemetry
 
@@ -381,7 +395,7 @@ See [docs/DIAGNOSTICS.md](docs/DIAGNOSTICS.md).
 
 ## HTTP/3 status
 
-HTTP/3 is intentionally deferred. SharpTls `0.9.0-preview.4` supplies the TLS 1.3
+HTTP/3 is intentionally deferred. SharpTls `0.9.0-preview.5` supplies the TLS 1.3
 state machine for a caller-owned QUIC transport, not UDP packets, loss recovery,
 congestion control, streams, HTTP/3, or QPACK. `System.Net.Quic` uses native MsQuic and
 platform TLS, so it cannot preserve this project's SharpTls-only ClientHello contract.
@@ -527,10 +541,11 @@ options.CertificatePins.Add(
 await using var session = new TlsSession(options);
 ```
 
-Pins are SHA-256 hashes of DER SubjectPublicKeyInfo. They run only after SharpTls has
-completed normal chain and hostname validation, so pinning cannot be used to trust an
-otherwise invalid certificate. Exact hosts and single-label `*.example.com` wildcards
-are supported.
+Pins are SHA-256 hashes of DER SubjectPublicKeyInfo. With the secure default they add a
+requirement after SharpTls chain and hostname validation. When the explicit dangerous
+validation bypass is enabled, pins still run and can reject the peer, but pinning does
+not turn that bypass into normal PKIX validation. Exact hosts and single-label
+`*.example.com` wildcards are supported.
 
 ## Response model
 
@@ -544,7 +559,8 @@ are supported.
 
 ## Current protocol behavior
 
-- HTTPS only; secure certificate and hostname validation cannot be disabled.
+- HTTPS only; certificate-chain and hostname validation are secure by default, with a
+  deliberately named opt-in bypass for controlled testing.
 - HTTP/2 with managed framing, HPACK/Huffman, ordered SETTINGS, CONTINUATION,
   multiplexing, flow control, cancellation/RST_STREAM, PING, GOAWAY, and trailers.
 - HTTP/1.0 and HTTP/1.1 responses, with HTTP/1.1 requests and explicit ALPN fallback.
@@ -584,7 +600,7 @@ Issues and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING
 and the [Code of Conduct](CODE_OF_CONDUCT.md) before contributing. Security reports
 must use the private process in [SECURITY.md](SECURITY.md), never a public issue.
 
-The project roadmap is complete for the current preview; the next work is API feedback,
+The `0.6` roadmap is complete for the current preview; the next work is API feedback,
 interoperability evidence, and fixes discovered by real users on the way to `1.0.0`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release history.

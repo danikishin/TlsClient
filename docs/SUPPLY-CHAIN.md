@@ -7,7 +7,7 @@ and GitHub artifact attestations before publishing the package.
 
 ## Dependency identity
 
-The package declares `SharpTls [0.9.0-preview.4]`. NuGet's square-bracket syntax is an
+The package declares `SharpTls [0.9.0-preview.5]`. NuGet's square-bracket syntax is an
 exact range: consumers cannot silently resolve a newer, wire-incompatible SharpTls
 preview. Every project commits `packages.lock.json`; CI restores with `--locked-mode`.
 The SDK and repository-local tools are pinned by `global.json` and
@@ -59,7 +59,7 @@ The attestations are stored by GitHub, not embedded into the NuGet archive. For 
 public repository, a downloaded artifact can be checked with:
 
 ```bash
-gh attestation verify TlsClient.0.5.0-preview.1.nupkg \
+gh attestation verify TlsClient.0.6.0-preview.1.nupkg \
   --repo danikishin/TlsClient
 ```
 

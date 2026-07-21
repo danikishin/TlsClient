@@ -350,7 +350,7 @@ string VerifyNuspec(ZipArchiveEntry nuspecEntry, bool verifyReleaseMetadata)
         .Single(element =>
             element.Name.LocalName == "dependency" &&
             (string?)element.Attribute("id") == "SharpTls");
-    if ((string?)sharpTls.Attribute("version") != "[0.9.0-preview.4]")
+    if ((string?)sharpTls.Attribute("version") != "[0.9.0-preview.5]")
     {
         throw new InvalidDataException("SharpTls must be an exact package dependency.");
     }

@@ -51,12 +51,14 @@ The authoritative table and dependency policy are in
 
 - SharpTls is the only TLS engine; there is no `SslStream`, native TLS, plaintext, or
   platform fallback.
-- Certificate-chain and hostname validation cannot be disabled through TlsClient. Pins
-  add restrictions and never replace normal validation.
+- Certificate-chain and hostname validation are enabled by default. The deliberately
+  named `DangerouslySkipServerCertificateValidation` option is an explicit caller-owned
+  escape hatch for controlled testing; enabling it permits active man-in-the-middle
+  attacks. Pins remain enforced but do not replace the skipped PKIX validation.
 - HTTP/proxy/parser/decompression/pool limits are security boundaries. Raising them is a
   caller risk decision, not a parser workaround.
-- Dangerous SharpTls features exposed through the advanced hook, such as an NSS key-log
-  sink, are explicit caller-controlled escape hatches. Reports that an application
+- Dangerous SharpTls features, including validation bypass and an NSS key-log sink, are
+  explicit caller-controlled escape hatches. Reports that an application
   deliberately publishes its own secrets through such a hook are normally out of scope;
   bypassing the explicit acknowledgment or leaking secrets without it is in scope.
 - TlsClient is not an SSRF allow-list, credential vault, endpoint authorization layer,

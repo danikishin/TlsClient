@@ -20,9 +20,9 @@
       },
       "SharpTls": {
         "type": "Direct",
-        "requested": "[0.9.0-preview.4, 0.9.0-preview.4]",
-        "resolved": "0.9.0-preview.4",
-        "contentHash": "a0ODbI24IYiAifDn4UZil3pbKFu6u6S+fN78Yc2A5ihlnwByLdS7ijsq71Tf0Uazym78f8cfJCwRswNny7Kcnw=="
+        "requested": "[0.9.0-preview.5, 0.9.0-preview.5]",
+        "resolved": "0.9.0-preview.5",
+        "contentHash": "G2EIx+CM3ASMnQTuUrfA+iBr4JB8B86lJjgdsIu1bHtqEsSmCFeHTOs7IsI1X7PeWGi7xsIaGg81nrSgUub4PQ=="
       },
       "Microsoft.Build.Tasks.Git": {
         "type": "Transitive",

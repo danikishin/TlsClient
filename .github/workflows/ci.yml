@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 env:
-  PACKAGE_VERSION: 0.5.0-preview.1
+  PACKAGE_VERSION: 0.6.0-preview.1
 
 jobs:
   build:
