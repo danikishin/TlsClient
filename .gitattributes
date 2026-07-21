@@ -1,0 +1,6 @@
+* text=auto eol=lf
+
+*.dll binary
+*.nupkg binary
+*.pdb binary
+*.snupkg binary

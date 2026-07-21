@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>TlsClient</AssemblyName>
+    <RootNamespace>TlsClient</RootNamespace>
+    <PackageId>TlsClient</PackageId>
+    <Title>TlsClient</Title>
+    <Version>0.5.0-preview.1</Version>
+    <Authors>TlsClient contributors</Authors>
+    <Copyright>Copyright © 2026 TlsClient contributors</Copyright>
+    <Description>A pure managed, fingerprintable HTTP client powered by SharpTls.</Description>
+    <PackageTags>tls;http;http2;hpack;fingerprint;clienthello;utls;managed</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/danikishin/TlsClient</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/danikishin/TlsClient/releases/tag/v0.5.0-preview.1</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/danikishin/TlsClient</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>portable</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpTls" Version="[0.9.0-preview.4]" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../ROADMAP.md" Pack="true" PackagePath="/" />
+    <None Include="../../CHANGELOG.md" Pack="true" PackagePath="/" />
+    <None Include="../../docs/PRESETS.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/PROFILE-MANIFEST.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/FINGERPRINT-LAB.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/ECH-DNS.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/SESSION-PERSISTENCE.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/CERTIFICATES.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/DIAGNOSTICS.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/HTTP3-EVALUATION.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/API-COMPATIBILITY.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/FUZZING.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/PERFORMANCE.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/SUPPLY-CHAIN.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/RELEASING.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/PROTOCOL-REVIEW.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../THREAT-MODEL.md" Pack="true" PackagePath="/" />
+    <None Include="../../SECURITY.md" Pack="true" PackagePath="/" />
+    <None Include="../../docs/SUPPORTED-VERSIONS.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/CONNECTIVITY.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/STREAMING.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/RETRIES.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../docs/POLICIES.md" Pack="true" PackagePath="docs/" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

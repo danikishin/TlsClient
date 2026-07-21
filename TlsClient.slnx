@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TlsClient/TlsClient.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TlsClient.Tests/TlsClient.Tests.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/TlsClient.QuickStart/TlsClient.QuickStart.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/TlsClient.Fuzz/TlsClient.Fuzz.csproj" />
+    <Project Path="tools/TlsClient.PackageTool/TlsClient.PackageTool.csproj" />
+    <Project Path="tools/TlsClient.Performance/TlsClient.Performance.csproj" />
+    <Project Path="tools/TlsClient.ProfileCatalog/TlsClient.ProfileCatalog.csproj" />
+  </Folder>
+</Solution>

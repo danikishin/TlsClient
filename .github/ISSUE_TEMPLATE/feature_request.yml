@@ -1,0 +1,34 @@
+name: Feature request
+description: Propose a scoped API, protocol, or developer-experience improvement
+title: "[Feature]: "
+labels: [enhancement, triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user problem cannot be solved cleanly with the current API?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API or behavior
+      description: Include wire behavior and secure defaults when relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This keeps SharpTls as the only TLS engine.
+          required: true
+        - label: I understand HTTP/3 requires a complete compatible QUIC transport.
+          required: false

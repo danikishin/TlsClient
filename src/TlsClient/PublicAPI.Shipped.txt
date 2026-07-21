@@ -1,0 +1,449 @@
+#nullable enable
+TlsClient.ITlsRequestPolicy
+TlsClient.ITlsRequestPolicy.OnAttemptCompletedAsync(TlsClient.TlsRequestPolicyContext! context, TlsClient.TlsRequestPolicyOutcome! outcome) -> System.Threading.Tasks.ValueTask
+TlsClient.ITlsRequestPolicy.OnAttemptStartingAsync(TlsClient.TlsRequestPolicyContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask
+TlsClient.TlsCertificatePins
+TlsClient.TlsCertificatePins.Add(string! host, System.Security.Cryptography.X509Certificates.X509Certificate2! certificate) -> void
+TlsClient.TlsCertificatePins.Add(string! host, string! pin) -> void
+TlsClient.TlsCertificatePins.Clear() -> void
+TlsClient.TlsCertificatePins.TlsCertificatePins() -> void
+TlsClient.TlsClientCertificates
+TlsClient.TlsClientCertificates.Clear() -> void
+TlsClient.TlsClientCertificates.Count.get -> int
+TlsClient.TlsClientCertificates.Default.get -> SharpTls.Certificates.TlsClientCertificate?
+TlsClient.TlsClientCertificates.Default.set -> void
+TlsClient.TlsClientCertificates.Remove(string! host) -> bool
+TlsClient.TlsClientCertificates.Selector.get -> SharpTls.Certificates.TlsClientCertificateSelector?
+TlsClient.TlsClientCertificates.Selector.set -> void
+TlsClient.TlsClientCertificates.Set(string! host, SharpTls.Certificates.TlsClientCertificate! certificate) -> void
+TlsClient.TlsClientCertificates.TlsClientCertificates() -> void
+TlsClient.TlsClientHello
+TlsClient.TlsClientHelloFingerprint
+TlsClient.TlsClientHelloFingerprint.AlpnProtocols.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsClientHelloFingerprint.CipherSuites.get -> System.Collections.Generic.IReadOnlyList<ushort>!
+TlsClient.TlsClientHelloFingerprint.EcPointFormats.get -> System.Collections.Generic.IReadOnlyList<byte>!
+TlsClient.TlsClientHelloFingerprint.ExtensionTypes.get -> System.Collections.Generic.IReadOnlyList<ushort>!
+TlsClient.TlsClientHelloFingerprint.Ja3Hash.get -> string!
+TlsClient.TlsClientHelloFingerprint.Ja3String.get -> string!
+TlsClient.TlsClientHelloFingerprint.Ja4.get -> string!
+TlsClient.TlsClientHelloFingerprint.Ja4Raw.get -> string!
+TlsClient.TlsClientHelloFingerprint.LegacyVersion.get -> ushort
+TlsClient.TlsClientHelloFingerprint.SignatureAlgorithms.get -> System.Collections.Generic.IReadOnlyList<ushort>!
+TlsClient.TlsClientHelloFingerprint.SupportedGroups.get -> System.Collections.Generic.IReadOnlyList<ushort>!
+TlsClient.TlsClientHelloFingerprint.SupportedVersions.get -> System.Collections.Generic.IReadOnlyList<ushort>!
+TlsClient.TlsClientHelloObservation
+TlsClient.TlsClientHelloObservation.Fingerprint.get -> TlsClient.TlsClientHelloFingerprint!
+TlsClient.TlsClientHelloObservation.Flight.get -> SharpTls.TlsClientHelloFlight
+TlsClient.TlsClientHelloObservation.LegacyRecordVersion.get -> ushort
+TlsClient.TlsClientHelloObservation.RecordFragmentSizes.get -> System.Collections.Generic.IReadOnlyList<int>!
+TlsClient.TlsClientHelloObservation.WireForm.get -> SharpTls.TlsClientHelloWireForm
+TlsClient.TlsClientHelloSnapshot
+TlsClient.TlsClientHelloSnapshot.ExportJson(bool writeIndented = true) -> string!
+TlsClient.TlsClientHelloSnapshot.GetEncodedHandshake() -> byte[]!
+TlsClient.TlsClientHelloSnapshot.HttpVersionPolicy.get -> TlsClient.TlsHttpVersionPolicy
+TlsClient.TlsClientHelloSnapshot.Length.get -> int
+TlsClient.TlsClientHelloSnapshot.ProfileName.get -> string!
+TlsClient.TlsClientHelloSnapshot.ServerName.get -> string!
+TlsClient.TlsClientHelloSnapshot.Sha256.get -> string!
+TlsClient.TlsConnectEvent
+TlsClient.TlsConnectEvent.Address.get -> System.Net.IPAddress?
+TlsClient.TlsConnectEvent.AddressCount.get -> int
+TlsClient.TlsConnectEvent.ApplicationProtocol.get -> string?
+TlsClient.TlsConnectEvent.ConnectionId.get -> System.Guid
+TlsClient.TlsConnectEvent.Elapsed.get -> System.TimeSpan
+TlsClient.TlsConnectEvent.Exception.get -> System.Exception?
+TlsClient.TlsConnectEvent.Host.get -> string!
+TlsClient.TlsConnectEvent.Kind.get -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEvent.Port.get -> int
+TlsClient.TlsConnectEvent.Timestamp.get -> System.DateTimeOffset
+TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.DnsCacheHit = 0 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.DnsResolutionCompleted = 2 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.DnsResolutionFailed = 3 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.DnsResolutionStarted = 1 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.ProxyTunnelCompleted = 8 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.ProxyTunnelFailed = 9 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.ProxyTunnelStarted = 7 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.TcpAttemptFailed = 5 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.TcpAttemptStarted = 4 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.TcpConnected = 6 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.TlsHandshakeCompleted = 11 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.TlsHandshakeFailed = 12 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectEventKind.TlsHandshakeStarted = 10 -> TlsClient.TlsConnectEventKind
+TlsClient.TlsConnectionInfo
+TlsClient.TlsConnectionInfo.ApplicationProtocol.get -> string?
+TlsClient.TlsConnectionInfo.CipherSuite.get -> SharpTls.Protocol.TlsCipherSuite
+TlsClient.TlsConnectionInfo.ClientHelloProfile.get -> string!
+TlsClient.TlsConnectionInfo.EncryptedClientHelloAccepted.get -> bool
+TlsClient.TlsConnectionInfo.Group.get -> SharpTls.Protocol.NamedGroup
+TlsClient.TlsConnectionInfo.PeerCertificateChain.get -> System.Collections.Generic.IReadOnlyList<byte[]!>!
+TlsClient.TlsConnectionInfo.ProtocolVersion.get -> SharpTls.Protocol.TlsProtocolVersion
+TlsClient.TlsConnectionInfo.SessionWasResumed.get -> bool
+TlsClient.TlsConnectionInfo.UsedHelloRetryRequest.get -> bool
+TlsClient.TlsDiagnostics
+TlsClient.TlsFingerprintDiagnostics
+TlsClient.TlsHandshakeDiagnostic
+TlsClient.TlsHandshakeDiagnostic.ClientHelloFlight.get -> SharpTls.TlsClientHelloFlight?
+TlsClient.TlsHandshakeDiagnostic.ConnectionId.get -> System.Guid
+TlsClient.TlsHandshakeDiagnostic.Direction.get -> SharpTls.TlsHandshakeEventDirection
+TlsClient.TlsHandshakeDiagnostic.EncodedLength.get -> int
+TlsClient.TlsHandshakeDiagnostic.Host.get -> string!
+TlsClient.TlsHandshakeDiagnostic.Kind.get -> SharpTls.TlsHandshakeEventKind
+TlsClient.TlsHandshakeDiagnostic.Port.get -> int
+TlsClient.TlsHandshakeDiagnostic.ProtocolVersion.get -> SharpTls.Protocol.TlsProtocolVersion?
+TlsClient.TlsHandshakeDiagnostic.SequenceNumber.get -> long
+TlsClient.TlsHandshakeDiagnostic.Timestamp.get -> System.DateTimeOffset
+TlsClient.TlsHeaders
+TlsClient.TlsHeaders.Add(string! name, string! value) -> void
+TlsClient.TlsHeaders.Clear() -> void
+TlsClient.TlsHeaders.Clone() -> TlsClient.TlsHeaders!
+TlsClient.TlsHeaders.Contains(string! name) -> bool
+TlsClient.TlsHeaders.Count.get -> int
+TlsClient.TlsHeaders.GetEnumerator() -> System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string!, System.Collections.Generic.IReadOnlyList<string!>!>>!
+TlsClient.TlsHeaders.Remove(string! name) -> bool
+TlsClient.TlsHeaders.Set(string! name, params string![]! values) -> void
+TlsClient.TlsHeaders.Set(string! name, string! value) -> void
+TlsClient.TlsHeaders.TlsHeaders() -> void
+TlsClient.TlsHeaders.TryGetValues(string! name, out System.Collections.Generic.IReadOnlyList<string!>! values) -> bool
+TlsClient.TlsHeaders.this[string! name].get -> string!
+TlsClient.TlsHeaders.this[string! name].set -> void
+TlsClient.TlsHttp2Options
+TlsClient.TlsHttp2Options.ConnectionWindowIncrement.get -> uint
+TlsClient.TlsHttp2Options.ConnectionWindowIncrement.set -> void
+TlsClient.TlsHttp2Options.DisableRfc7540Priorities.get -> bool
+TlsClient.TlsHttp2Options.DisableRfc7540Priorities.set -> void
+TlsClient.TlsHttp2Options.EnableConnectProtocol.get -> bool
+TlsClient.TlsHttp2Options.EnableConnectProtocol.set -> void
+TlsClient.TlsHttp2Options.HeaderPriority.get -> TlsClient.TlsHttp2Priority?
+TlsClient.TlsHttp2Options.HeaderPriority.set -> void
+TlsClient.TlsHttp2Options.HeaderTableSize.get -> uint
+TlsClient.TlsHttp2Options.HeaderTableSize.set -> void
+TlsClient.TlsHttp2Options.InitialPriorityFrames.get -> System.Collections.Generic.IReadOnlyList<TlsClient.TlsHttp2PriorityFrame!>!
+TlsClient.TlsHttp2Options.InitialPriorityFrames.set -> void
+TlsClient.TlsHttp2Options.InitialWindowSize.get -> uint
+TlsClient.TlsHttp2Options.InitialWindowSize.set -> void
+TlsClient.TlsHttp2Options.MaxConcurrentStreams.get -> uint
+TlsClient.TlsHttp2Options.MaxConcurrentStreams.set -> void
+TlsClient.TlsHttp2Options.MaxFrameSize.get -> uint
+TlsClient.TlsHttp2Options.MaxFrameSize.set -> void
+TlsClient.TlsHttp2Options.MaxHeaderListSize.get -> uint
+TlsClient.TlsHttp2Options.MaxHeaderListSize.set -> void
+TlsClient.TlsHttp2Options.PriorityUpdate.get -> string?
+TlsClient.TlsHttp2Options.PriorityUpdate.set -> void
+TlsClient.TlsHttp2Options.PseudoHeaderOrder.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsHttp2Options.PseudoHeaderOrder.set -> void
+TlsClient.TlsHttp2Options.SettingsOrder.get -> System.Collections.Generic.IReadOnlyList<TlsClient.TlsHttp2Setting>!
+TlsClient.TlsHttp2Options.SettingsOrder.set -> void
+TlsClient.TlsHttp2Options.TlsHttp2Options() -> void
+TlsClient.TlsHttp2Priority
+TlsClient.TlsHttp2Priority.Exclusive.get -> bool
+TlsClient.TlsHttp2Priority.Exclusive.set -> void
+TlsClient.TlsHttp2Priority.StreamDependency.get -> int
+TlsClient.TlsHttp2Priority.StreamDependency.set -> void
+TlsClient.TlsHttp2Priority.TlsHttp2Priority() -> void
+TlsClient.TlsHttp2Priority.Weight.get -> int
+TlsClient.TlsHttp2Priority.Weight.set -> void
+TlsClient.TlsHttp2PriorityFrame
+TlsClient.TlsHttp2PriorityFrame.Priority.get -> TlsClient.TlsHttp2Priority!
+TlsClient.TlsHttp2PriorityFrame.StreamId.get -> int
+TlsClient.TlsHttp2PriorityFrame.TlsHttp2PriorityFrame(int streamId) -> void
+TlsClient.TlsHttp2Setting
+TlsClient.TlsHttp2Setting.EnableConnectProtocol = 8 -> TlsClient.TlsHttp2Setting
+TlsClient.TlsHttp2Setting.EnablePush = 2 -> TlsClient.TlsHttp2Setting
+TlsClient.TlsHttp2Setting.HeaderTableSize = 1 -> TlsClient.TlsHttp2Setting
+TlsClient.TlsHttp2Setting.InitialWindowSize = 4 -> TlsClient.TlsHttp2Setting
+TlsClient.TlsHttp2Setting.MaxConcurrentStreams = 3 -> TlsClient.TlsHttp2Setting
+TlsClient.TlsHttp2Setting.MaxFrameSize = 5 -> TlsClient.TlsHttp2Setting
+TlsClient.TlsHttp2Setting.MaxHeaderListSize = 6 -> TlsClient.TlsHttp2Setting
+TlsClient.TlsHttp2Setting.NoRfc7540Priorities = 9 -> TlsClient.TlsHttp2Setting
+TlsClient.TlsHttpBehaviorProfile
+TlsClient.TlsHttpBehaviorProfile.ApplyTo(TlsClient.TlsSessionOptions! options) -> void
+TlsClient.TlsHttpBehaviorProfile.ExportJson(bool writeIndented = true) -> string!
+TlsClient.TlsHttpBehaviorProfile.HeaderOrder.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsHttpBehaviorProfile.Http2.get -> TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior!
+TlsClient.TlsHttpBehaviorProfile.HttpVersionPolicy.get -> TlsClient.TlsHttpVersionPolicy
+TlsClient.TlsHttpBehaviorProfile.Name.get -> string!
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.ConnectionWindowIncrement.get -> uint
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.DisableRfc7540Priorities.get -> bool
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.EnableConnectProtocol.get -> bool
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.HeaderPriority.get -> TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityBehavior?
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.HeaderTableSize.get -> uint
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.InitialPriorityFrames.get -> System.Collections.Generic.IReadOnlyList<TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityFrameBehavior!>!
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.InitialWindowSize.get -> uint
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.MaxConcurrentStreams.get -> uint
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.MaxFrameSize.get -> uint
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.MaxHeaderListSize.get -> uint
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.PriorityUpdate.get -> string?
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.PseudoHeaderOrder.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2Behavior.SettingsOrder.get -> System.Collections.Generic.IReadOnlyList<TlsClient.TlsHttp2Setting>!
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityBehavior
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityBehavior.Exclusive.get -> bool
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityBehavior.StreamDependency.get -> int
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityBehavior.Weight.get -> int
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityFrameBehavior
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityFrameBehavior.Priority.get -> TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityBehavior!
+TlsClient.TlsHttpBehaviorProfile.TlsHttp2PriorityFrameBehavior.StreamId.get -> int
+TlsClient.TlsHttpException
+TlsClient.TlsHttpException.Url.get -> System.Uri!
+TlsClient.TlsHttpProtocolException
+TlsClient.TlsHttpVersionPolicy
+TlsClient.TlsHttpVersionPolicy.Http11Only = 1 -> TlsClient.TlsHttpVersionPolicy
+TlsClient.TlsHttpVersionPolicy.Http2Only = 2 -> TlsClient.TlsHttpVersionPolicy
+TlsClient.TlsHttpVersionPolicy.PreferHttp2 = 0 -> TlsClient.TlsHttpVersionPolicy
+TlsClient.TlsImportedClientHello
+TlsClient.TlsImportedClientHello.Capture.get -> SharpTls.ClientHelloCaptureResult!
+TlsClient.TlsImportedClientHello.Profile.get -> TlsClient.TlsProfile!
+TlsClient.TlsPreset
+TlsClient.TlsPreset.CreateOptions() -> TlsClient.TlsSessionOptions!
+TlsClient.TlsPreset.Name.get -> string!
+TlsClient.TlsPreset.Profile.get -> TlsClient.TlsProfile!
+TlsClient.TlsPresets
+TlsClient.TlsProfile
+TlsClient.TlsProfile.ClientHello.get -> SharpTls.ClientHelloProfile!
+TlsClient.TlsProfile.Name.get -> string!
+TlsClient.TlsProfile.SharpTlsProfileName.get -> string!
+TlsClient.TlsProfileCatalog
+TlsClient.TlsProfileHttpCompatibility
+TlsClient.TlsProfileHttpCompatibility.Http11 = 1 -> TlsClient.TlsProfileHttpCompatibility
+TlsClient.TlsProfileHttpCompatibility.Http2 = 2 -> TlsClient.TlsProfileHttpCompatibility
+TlsClient.TlsProfileHttpCompatibility.None = 0 -> TlsClient.TlsProfileHttpCompatibility
+TlsClient.TlsProfileManifest
+TlsClient.TlsProfileManifest.AlpnProtocols.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsProfileManifest.CipherSuites.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsProfileManifest.ExtensionCount.get -> int
+TlsClient.TlsProfileManifest.HttpCompatibility.get -> TlsClient.TlsProfileHttpCompatibility
+TlsClient.TlsProfileManifest.KeyShareGroups.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsProfileManifest.Name.get -> string!
+TlsClient.TlsProfileManifest.SharpTlsProfileName.get -> string!
+TlsClient.TlsProfileManifest.SharpTlsVersion.get -> string!
+TlsClient.TlsProfileManifest.ShufflesExtensions.get -> bool
+TlsClient.TlsProfileManifest.SignatureAlgorithms.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsProfileManifest.SpecificationSha256.get -> string!
+TlsClient.TlsProfileManifest.SupportedGroups.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsProfileManifest.SupportsEarlyData.get -> bool
+TlsClient.TlsProfileManifest.SupportsSessionResumption.get -> bool
+TlsClient.TlsProfileManifest.TlsVersions.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TlsClient.TlsProfileManifest.UsesGrease.get -> bool
+TlsClient.TlsProfileManifest.UsesGreaseEch.get -> bool
+TlsClient.TlsProfileRoller
+TlsClient.TlsProfileRoller.CachedOriginCount.get -> int
+TlsClient.TlsProfileRoller.ClearCache() -> void
+TlsClient.TlsProfileRoller.Name.get -> string!
+TlsClient.TlsProfileRoller.TlsProfileRoller() -> void
+TlsClient.TlsProfileRoller.TlsProfileRoller(string! name, SharpTls.ClientHelloRollerOptions! options) -> void
+TlsClient.TlsProfiles
+TlsClient.TlsProxy
+TlsClient.TlsProxy.Address.get -> System.Uri!
+TlsClient.TlsProxy.Credentials.get -> System.Net.NetworkCredential?
+TlsClient.TlsProxy.Type.get -> TlsClient.TlsProxyType
+TlsClient.TlsProxyType
+TlsClient.TlsProxyType.Http = 0 -> TlsClient.TlsProxyType
+TlsClient.TlsProxyType.Socks4 = 1 -> TlsClient.TlsProxyType
+TlsClient.TlsProxyType.Socks5 = 2 -> TlsClient.TlsProxyType
+TlsClient.TlsRedirect
+TlsClient.TlsRedirect.TlsRedirect(System.Uri! From, System.Uri! To, System.Net.HttpStatusCode StatusCode) -> void
+TlsClient.TlsRedirect.From.get -> System.Uri!
+TlsClient.TlsRedirect.From.init -> void
+TlsClient.TlsRedirect.StatusCode.get -> System.Net.HttpStatusCode
+TlsClient.TlsRedirect.StatusCode.init -> void
+TlsClient.TlsRedirect.To.get -> System.Uri!
+TlsClient.TlsRedirect.To.init -> void
+TlsClient.TlsRequestOptions
+TlsClient.TlsRequestOptions.EnableRetries.get -> bool?
+TlsClient.TlsRequestOptions.EnableRetries.set -> void
+TlsClient.TlsRequestOptions.Proxy.get -> TlsClient.TlsProxy?
+TlsClient.TlsRequestOptions.Proxy.set -> void
+TlsClient.TlsRequestOptions.ReplayPolicy.get -> TlsClient.TlsRequestReplayPolicy
+TlsClient.TlsRequestOptions.ReplayPolicy.set -> void
+TlsClient.TlsRequestOptions.TlsRequestOptions() -> void
+TlsClient.TlsRequestOptions.Trailers.get -> TlsClient.TlsHeaders!
+TlsClient.TlsRequestOptions.UseSessionProxy() -> void
+TlsClient.TlsRequestPolicyContext
+TlsClient.TlsRequestPolicyContext.Attempt.get -> int
+TlsClient.TlsRequestPolicyContext.IsIdempotent.get -> bool
+TlsClient.TlsRequestPolicyContext.IsReplayable.get -> bool
+TlsClient.TlsRequestPolicyContext.Items.get -> System.Collections.Generic.IDictionary<object!, object?>!
+TlsClient.TlsRequestPolicyContext.Method.get -> string!
+TlsClient.TlsRequestPolicyContext.ProxyType.get -> TlsClient.TlsProxyType?
+TlsClient.TlsRequestPolicyContext.RedirectHop.get -> int
+TlsClient.TlsRequestPolicyContext.Url.get -> System.Uri!
+TlsClient.TlsRequestPolicyOutcome
+TlsClient.TlsRequestPolicyOutcome.TlsRequestPolicyOutcome(System.Net.HttpStatusCode? StatusCode, System.Exception? Exception, System.TimeSpan Duration, bool WillRetry) -> void
+TlsClient.TlsRequestPolicyOutcome.Duration.get -> System.TimeSpan
+TlsClient.TlsRequestPolicyOutcome.Duration.init -> void
+TlsClient.TlsRequestPolicyOutcome.Exception.get -> System.Exception?
+TlsClient.TlsRequestPolicyOutcome.Exception.init -> void
+TlsClient.TlsRequestPolicyOutcome.HasResponse.get -> bool
+TlsClient.TlsRequestPolicyOutcome.StatusCode.get -> System.Net.HttpStatusCode?
+TlsClient.TlsRequestPolicyOutcome.StatusCode.init -> void
+TlsClient.TlsRequestPolicyOutcome.WillRetry.get -> bool
+TlsClient.TlsRequestPolicyOutcome.WillRetry.init -> void
+TlsClient.TlsRequestReplayPolicy
+TlsClient.TlsRequestReplayPolicy.Buffer = 1 -> TlsClient.TlsRequestReplayPolicy
+TlsClient.TlsRequestReplayPolicy.Never = 0 -> TlsClient.TlsRequestReplayPolicy
+TlsClient.TlsResponse
+TlsClient.TlsResponse.Body.get -> System.ReadOnlyMemory<byte>
+TlsClient.TlsResponse.BodyWasStreamed.get -> bool
+TlsClient.TlsResponse.EnsureSuccessStatusCode() -> TlsClient.TlsResponse!
+TlsClient.TlsResponse.Headers.get -> TlsClient.TlsHeaders!
+TlsClient.TlsResponse.History.get -> System.Collections.Generic.IReadOnlyList<TlsClient.TlsRedirect!>!
+TlsClient.TlsResponse.HttpVersion.get -> System.Version!
+TlsClient.TlsResponse.Json<T>(System.Text.Json.JsonSerializerOptions? options = null) -> T?
+TlsClient.TlsResponse.ReasonPhrase.get -> string!
+TlsClient.TlsResponse.StatusCode.get -> System.Net.HttpStatusCode
+TlsClient.TlsResponse.Text.get -> string!
+TlsClient.TlsResponse.Tls.get -> TlsClient.TlsConnectionInfo!
+TlsClient.TlsResponse.Trailers.get -> TlsClient.TlsHeaders!
+TlsClient.TlsResponse.Url.get -> System.Uri!
+TlsClient.TlsResponse.WasDecompressed.get -> bool
+TlsClient.TlsRetryOptions
+TlsClient.TlsRetryOptions.Delay.get -> System.TimeSpan
+TlsClient.TlsRetryOptions.Delay.set -> void
+TlsClient.TlsRetryOptions.MaximumAttempts.get -> int
+TlsClient.TlsRetryOptions.MaximumAttempts.set -> void
+TlsClient.TlsRetryOptions.MaximumRetryAfter.get -> System.TimeSpan
+TlsClient.TlsRetryOptions.MaximumRetryAfter.set -> void
+TlsClient.TlsRetryOptions.RespectRetryAfter.get -> bool
+TlsClient.TlsRetryOptions.RespectRetryAfter.set -> void
+TlsClient.TlsRetryOptions.RetryConnectionFailures.get -> bool
+TlsClient.TlsRetryOptions.RetryConnectionFailures.set -> void
+TlsClient.TlsRetryOptions.RetryNonIdempotentMethods.get -> bool
+TlsClient.TlsRetryOptions.RetryNonIdempotentMethods.set -> void
+TlsClient.TlsRetryOptions.StatusCodes.get -> System.Collections.Generic.ISet<System.Net.HttpStatusCode>!
+TlsClient.TlsRetryOptions.TlsRetryOptions() -> void
+TlsClient.TlsSession
+TlsClient.TlsSession.CachedTls13SessionCount.get -> int
+TlsClient.TlsSession.Cookies.get -> System.Net.CookieContainer!
+TlsClient.TlsSession.DefaultHeaders.get -> TlsClient.TlsHeaders!
+TlsClient.TlsSession.DeleteAsync(string! url, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.Dispose() -> void
+TlsClient.TlsSession.DisposeAsync() -> System.Threading.Tasks.ValueTask
+TlsClient.TlsSession.DownloadAsync(System.Uri! url, System.IO.Stream! destination, TlsClient.TlsStreamingOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.DownloadAsync(string! url, System.IO.Stream! destination, TlsClient.TlsStreamingOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.ExportTls13SessionState(SharpTls.Tls13SessionStateProtector! protector) -> byte[]!
+TlsClient.TlsSession.GetAsync(System.Uri! url, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.GetAsync(string! url, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.ImportTls13SessionState(System.ReadOnlySpan<byte> protectedState, SharpTls.Tls13SessionStateProtector! protector) -> void
+TlsClient.TlsSession.PostAsync(string! url, System.Net.Http.HttpContent! content, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.PostJsonAsync<T>(string! url, T value, System.Text.Json.JsonSerializerOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.SendAsync(System.Net.Http.HttpRequestMessage! request, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.SendStreamingAsync(System.Net.Http.HttpRequestMessage! request, System.IO.Stream! responseBody, TlsClient.TlsStreamingOptions? options = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<TlsClient.TlsResponse!>!
+TlsClient.TlsSession.TlsSession() -> void
+TlsClient.TlsSession.TlsSession(TlsClient.TlsPreset! preset) -> void
+TlsClient.TlsSession.TlsSession(TlsClient.TlsSessionOptions! options) -> void
+TlsClient.TlsSessionOptions
+TlsClient.TlsSessionOptions.AutomaticDecompression.get -> bool
+TlsClient.TlsSessionOptions.AutomaticDecompression.set -> void
+TlsClient.TlsSessionOptions.CertificatePins.get -> TlsClient.TlsCertificatePins!
+TlsClient.TlsSessionOptions.ClientCertificates.get -> TlsClient.TlsClientCertificates!
+TlsClient.TlsSessionOptions.ConfigureTls.get -> System.Action<SharpTls.CustomTlsClientOptions!>?
+TlsClient.TlsSessionOptions.ConfigureTls.set -> void
+TlsClient.TlsSessionOptions.ConnectObserver.get -> System.Action<TlsClient.TlsConnectEvent!>?
+TlsClient.TlsSessionOptions.ConnectObserver.set -> void
+TlsClient.TlsSessionOptions.DefaultHeaders.get -> TlsClient.TlsHeaders!
+TlsClient.TlsSessionOptions.DnsRefreshInterval.get -> System.TimeSpan
+TlsClient.TlsSessionOptions.DnsRefreshInterval.set -> void
+TlsClient.TlsSessionOptions.DnsResolver.get -> System.Func<string!, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask<System.Collections.Generic.IReadOnlyList<System.Net.IPAddress!>!>>?
+TlsClient.TlsSessionOptions.DnsResolver.set -> void
+TlsClient.TlsSessionOptions.EchDnsResolver.get -> SharpTls.TlsEchDnsResolver?
+TlsClient.TlsSessionOptions.EchDnsResolver.set -> void
+TlsClient.TlsSessionOptions.Expect100ContinueTimeout.get -> System.TimeSpan
+TlsClient.TlsSessionOptions.Expect100ContinueTimeout.set -> void
+TlsClient.TlsSessionOptions.FollowRedirects.get -> bool
+TlsClient.TlsSessionOptions.FollowRedirects.set -> void
+TlsClient.TlsSessionOptions.HandshakeObserver.get -> System.Action<TlsClient.TlsHandshakeDiagnostic!>?
+TlsClient.TlsSessionOptions.HandshakeObserver.set -> void
+TlsClient.TlsSessionOptions.HappyEyeballsDelay.get -> System.TimeSpan
+TlsClient.TlsSessionOptions.HappyEyeballsDelay.set -> void
+TlsClient.TlsSessionOptions.HeaderOrder.get -> System.Collections.Generic.IReadOnlyList<string!>?
+TlsClient.TlsSessionOptions.HeaderOrder.set -> void
+TlsClient.TlsSessionOptions.Http2.get -> TlsClient.TlsHttp2Options!
+TlsClient.TlsSessionOptions.HttpVersionPolicy.get -> TlsClient.TlsHttpVersionPolicy
+TlsClient.TlsSessionOptions.HttpVersionPolicy.set -> void
+TlsClient.TlsSessionOptions.MaximumConnectionsPerOrigin.get -> int
+TlsClient.TlsSessionOptions.MaximumConnectionsPerOrigin.set -> void
+TlsClient.TlsSessionOptions.MaximumDnsCacheEntries.get -> int
+TlsClient.TlsSessionOptions.MaximumDnsCacheEntries.set -> void
+TlsClient.TlsSessionOptions.MaximumPooledConnections.get -> int
+TlsClient.TlsSessionOptions.MaximumPooledConnections.set -> void
+TlsClient.TlsSessionOptions.MaximumRedirects.get -> int
+TlsClient.TlsSessionOptions.MaximumRedirects.set -> void
+TlsClient.TlsSessionOptions.MaximumRequestBodyBytes.get -> long
+TlsClient.TlsSessionOptions.MaximumRequestBodyBytes.set -> void
+TlsClient.TlsSessionOptions.MaximumRequestHeaderBytes.get -> int
+TlsClient.TlsSessionOptions.MaximumRequestHeaderBytes.set -> void
+TlsClient.TlsSessionOptions.MaximumResponseBodyBytes.get -> long
+TlsClient.TlsSessionOptions.MaximumResponseBodyBytes.set -> void
+TlsClient.TlsSessionOptions.MaximumResponseHeaderBytes.get -> int
+TlsClient.TlsSessionOptions.MaximumResponseHeaderBytes.set -> void
+TlsClient.TlsSessionOptions.MaximumResponseHeaderCount.get -> int
+TlsClient.TlsSessionOptions.MaximumResponseHeaderCount.set -> void
+TlsClient.TlsSessionOptions.PooledConnectionIdleTimeout.get -> System.TimeSpan
+TlsClient.TlsSessionOptions.PooledConnectionIdleTimeout.set -> void
+TlsClient.TlsSessionOptions.PooledConnectionLifetime.get -> System.TimeSpan
+TlsClient.TlsSessionOptions.PooledConnectionLifetime.set -> void
+TlsClient.TlsSessionOptions.Profile.get -> TlsClient.TlsProfile!
+TlsClient.TlsSessionOptions.Profile.set -> void
+TlsClient.TlsSessionOptions.ProfileRoller.get -> TlsClient.TlsProfileRoller?
+TlsClient.TlsSessionOptions.ProfileRoller.set -> void
+TlsClient.TlsSessionOptions.Proxy.get -> TlsClient.TlsProxy?
+TlsClient.TlsSessionOptions.Proxy.set -> void
+TlsClient.TlsSessionOptions.RequestPolicies.get -> System.Collections.Generic.IList<TlsClient.ITlsRequestPolicy!>!
+TlsClient.TlsSessionOptions.Retry.get -> TlsClient.TlsRetryOptions!
+TlsClient.TlsSessionOptions.Timeout.get -> System.TimeSpan
+TlsClient.TlsSessionOptions.Timeout.set -> void
+TlsClient.TlsSessionOptions.TlsSessionOptions() -> void
+TlsClient.TlsSessionOptions.TlsSessionOptions(TlsClient.TlsPreset! preset) -> void
+TlsClient.TlsStreamingOptions
+TlsClient.TlsStreamingOptions.AutomaticDecompression.get -> bool?
+TlsClient.TlsStreamingOptions.AutomaticDecompression.set -> void
+TlsClient.TlsStreamingOptions.BufferSize.get -> int
+TlsClient.TlsStreamingOptions.BufferSize.set -> void
+TlsClient.TlsStreamingOptions.TlsStreamingOptions() -> void
+const TlsClient.TlsDiagnostics.ActivitySourceName = "TlsClient" -> string!
+override TlsClient.TlsPreset.ToString() -> string!
+override TlsClient.TlsProfile.ToString() -> string!
+override TlsClient.TlsProxy.ToString() -> string!
+static TlsClient.TlsCertificatePins.CreateSha256Pin(System.Security.Cryptography.X509Certificates.X509Certificate2! certificate) -> string!
+static TlsClient.TlsClientHello.BuildSnapshotForTesting(TlsClient.TlsProfile! profile, string! serverName, byte[]! seed, TlsClient.TlsHttpVersionPolicy httpVersionPolicy = TlsClient.TlsHttpVersionPolicy.PreferHttp2) -> TlsClient.TlsClientHelloSnapshot!
+static TlsClient.TlsClientHello.ExportJson(TlsClient.TlsProfile! profile, SharpTls.ClientHelloSpecJsonOptions? options = null) -> string!
+static TlsClient.TlsClientHello.ImportCapture(string! name, System.ReadOnlySpan<byte> source, SharpTls.ClientHelloCaptureFormat format = SharpTls.ClientHelloCaptureFormat.Auto, SharpTls.ClientHelloImportOptions? options = null) -> TlsClient.TlsImportedClientHello!
+static TlsClient.TlsClientHello.ImportJson(string! name, string! json, SharpTls.ClientHelloSpecJsonOptions? options = null) -> TlsClient.TlsProfile!
+static TlsClient.TlsClientHello.Observe(TlsClient.TlsSessionOptions! options, System.Action<TlsClient.TlsClientHelloObservation!>! observer) -> void
+static TlsClient.TlsDiagnostics.ActivitySource.get -> System.Diagnostics.ActivitySource!
+static TlsClient.TlsFingerprintDiagnostics.InspectHandshake(System.ReadOnlySpan<byte> handshake) -> TlsClient.TlsClientHelloFingerprint!
+static TlsClient.TlsHttpBehaviorProfile.Capture(string! name, TlsClient.TlsSessionOptions! options) -> TlsClient.TlsHttpBehaviorProfile!
+static TlsClient.TlsHttpBehaviorProfile.ImportJson(string! json, int maximumDocumentSize = 262144) -> TlsClient.TlsHttpBehaviorProfile!
+static TlsClient.TlsPresets.Android.get -> TlsClient.TlsPreset!
+static TlsClient.TlsPresets.Android11.get -> TlsClient.TlsPreset!
+static TlsClient.TlsPresets.Chrome.get -> TlsClient.TlsPreset!
+static TlsClient.TlsPresets.Chrome133.get -> TlsClient.TlsPreset!
+static TlsClient.TlsPresets.Firefox.get -> TlsClient.TlsPreset!
+static TlsClient.TlsPresets.Firefox148.get -> TlsClient.TlsPreset!
+static TlsClient.TlsProfile.Create(string! name, SharpTls.ClientHelloProfile! clientHello) -> TlsClient.TlsProfile!
+static TlsClient.TlsProfileCatalog.ExportJson(bool writeIndented = true) -> string!
+static TlsClient.TlsProfileCatalog.ExportMarkdown() -> string!
+static TlsClient.TlsProfileCatalog.Inspect(TlsClient.TlsProfile! profile) -> TlsClient.TlsProfileManifest!
+static TlsClient.TlsProfileCatalog.Profiles.get -> System.Collections.Generic.IReadOnlyList<TlsClient.TlsProfileManifest!>!
+static TlsClient.TlsProfiles.All.get -> System.Collections.Generic.IReadOnlyList<TlsClient.TlsProfile!>!
+static TlsClient.TlsProfiles.Android.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.Android11.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.Chrome.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.Chrome133.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.CreateRandomized(string! name = "randomized", SharpTls.ClientHelloRandomizationOptions? options = null) -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.CreateRandomizedForTesting(string! name, byte[]! seed, SharpTls.ClientHelloRandomizationOptions? options = null) -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.Edge.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.Firefox.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.Firefox148.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.IOS.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.Modern.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProfiles.Safari.get -> TlsClient.TlsProfile!
+static TlsClient.TlsProxy.Http(System.Uri! address) -> TlsClient.TlsProxy!
+static TlsClient.TlsProxy.Http(string! address) -> TlsClient.TlsProxy!
+static TlsClient.TlsProxy.Http(string! address, string! username, string! password) -> TlsClient.TlsProxy!
+static TlsClient.TlsProxy.Socks4(string! address) -> TlsClient.TlsProxy!
+static TlsClient.TlsProxy.Socks4(string! address, string! userId) -> TlsClient.TlsProxy!
+static TlsClient.TlsProxy.Socks5(string! address) -> TlsClient.TlsProxy!
+static TlsClient.TlsProxy.Socks5(string! address, string! username, string! password) -> TlsClient.TlsProxy!
+static TlsClient.TlsRequestOptions.For(System.Net.Http.HttpRequestMessage! request) -> TlsClient.TlsRequestOptions!

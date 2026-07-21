@@ -1,0 +1,233 @@
+name: release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Exact package version for a non-publishing dry run
+        required: true
+        type: string
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+  artifact-metadata: write
+
+jobs:
+  build-attest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      version: ${{ steps.version.outputs.value }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+      - id: version
+        name: Resolve and validate release version
+        shell: bash
+        env:
+          DISPATCH_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="$DISPATCH_VERSION"
+          fi
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Invalid release version: $VERSION" >&2
+            exit 1
+          fi
+          PROJECT_VERSION="$(dotnet msbuild src/TlsClient/TlsClient.csproj -nologo -getProperty:Version)"
+          if [[ "$VERSION" != "$PROJECT_VERSION" ]]; then
+            echo "Tag/input $VERSION does not match project version $PROJECT_VERSION" >&2
+            exit 1
+          fi
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "RELEASE_VERSION=$VERSION" >> "$GITHUB_ENV"
+      - name: Require release tags to point into main
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "Release tag must point to a commit reachable from main." >&2
+            exit 1
+          fi
+      - run: dotnet tool restore
+      - run: dotnet restore TlsClient.slnx --locked-mode
+      - run: dotnet format whitespace --folder . --verify-no-changes
+      - run: dotnet build TlsClient.slnx --configuration Release --no-restore
+      - run: dotnet test TlsClient.slnx --configuration Release --no-build
+      - name: Pack twice
+        run: |
+          dotnet pack src/TlsClient/TlsClient.csproj --configuration Release \
+            --no-build --no-restore --output artifacts/packages
+          dotnet pack src/TlsClient/TlsClient.csproj --configuration Release \
+            --no-build --no-restore --output artifacts/reproduction
+      - name: Normalize package archives
+        run: |
+          dotnet run --project tools/TlsClient.PackageTool --configuration Release \
+            --no-build -- normalize \
+            "artifacts/packages/TlsClient.$RELEASE_VERSION.nupkg" \
+            "artifacts/packages/TlsClient.$RELEASE_VERSION.snupkg" \
+            "artifacts/reproduction/TlsClient.$RELEASE_VERSION.nupkg" \
+            "artifacts/reproduction/TlsClient.$RELEASE_VERSION.snupkg"
+      - name: Verify payload and reproducibility
+        run: |
+          dotnet run --project tools/TlsClient.PackageTool --configuration Release \
+            --no-build -- verify \
+            "artifacts/packages/TlsClient.$RELEASE_VERSION.nupkg" \
+            "artifacts/packages/TlsClient.$RELEASE_VERSION.snupkg"
+          dotnet run --project tools/TlsClient.PackageTool --configuration Release \
+            --no-build -- compare \
+            "artifacts/packages/TlsClient.$RELEASE_VERSION.nupkg" \
+            "artifacts/reproduction/TlsClient.$RELEASE_VERSION.nupkg"
+          dotnet run --project tools/TlsClient.PackageTool --configuration Release \
+            --no-build -- compare \
+            "artifacts/packages/TlsClient.$RELEASE_VERSION.snupkg" \
+            "artifacts/reproduction/TlsClient.$RELEASE_VERSION.snupkg"
+          dotnet run --project tools/TlsClient.PackageTool --configuration Release \
+            --no-build -- sourcelink \
+            "artifacts/packages/TlsClient.$RELEASE_VERSION.snupkg" --fetch
+      - name: Generate SPDX SBOM
+        shell: bash
+        run: |
+          COMMIT_EPOCH="$(git show -s --format=%ct "$GITHUB_SHA")"
+          GENERATION_TIME="$(date -u -d "@$COMMIT_EPOCH" +%Y-%m-%dT%H:%M:%SZ)"
+          mkdir -p artifacts/sbom
+          dotnet sbom-tool generate \
+            -b artifacts/packages \
+            -bc src/TlsClient \
+            -m artifacts/sbom \
+            -pn TlsClient \
+            -pv "$RELEASE_VERSION" \
+            -ps "Organization: TlsClient contributors" \
+            -nsb https://github.com/danikishin/TlsClient \
+            -nsu "$GITHUB_SHA" \
+            -gt "$GENERATION_TIME" \
+            -mi SPDX:2.2 \
+            -D true
+          dotnet sbom-tool validate \
+            -b artifacts/packages \
+            -m artifacts/sbom/_manifest \
+            -o artifacts/sbom-validation.json \
+            -mi SPDX:2.2 \
+            -n true
+      - name: Attest build provenance
+        uses: actions/attest@f7c74d28b9d84cb8768d0b8ca14a4bac6ef463e6 # v4.2.0
+        with:
+          subject-path: |
+            artifacts/packages/TlsClient.${{ steps.version.outputs.value }}.nupkg
+            artifacts/packages/TlsClient.${{ steps.version.outputs.value }}.snupkg
+      - name: Attest SBOM
+        uses: actions/attest@f7c74d28b9d84cb8768d0b8ca14a4bac6ef463e6 # v4.2.0
+        with:
+          subject-path: |
+            artifacts/packages/TlsClient.${{ steps.version.outputs.value }}.nupkg
+            artifacts/packages/TlsClient.${{ steps.version.outputs.value }}.snupkg
+          sbom-path: artifacts/sbom/_manifest/spdx_2.2/manifest.spdx.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tlsclient-${{ steps.version.outputs.value }}
+          path: |
+            artifacts/packages/*.*nupkg
+            artifacts/sbom/_manifest/spdx_2.2/manifest.spdx.json
+            artifacts/sbom-validation.json
+          if-no-files-found: error
+
+  publish-nuget:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build-attest
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: nuget
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 9.0.200
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: tlsclient-${{ needs.build-attest.outputs.version }}
+          path: artifacts/release
+      - name: Detect NuGet publication credentials
+        id: nuget
+        shell: bash
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          if [[ -n "$NUGET_API_KEY" ]]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::NUGET_API_KEY is not configured; GitHub Release will still be created."
+          fi
+      - name: Publish immutable NuGet package and symbols
+        if: steps.nuget.outputs.enabled == 'true'
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: >-
+          dotnet nuget push
+          "artifacts/release/packages/TlsClient.${{ needs.build-attest.outputs.version }}.nupkg"
+          --api-key "$NUGET_API_KEY"
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+
+  github-release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-attest, publish-nuget]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: tlsclient-${{ needs.build-attest.outputs.version }}
+          path: artifacts/release
+      - name: Create or update GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ needs.build-attest.outputs.version }}
+        run: |
+          tag="$GITHUB_REF_NAME"
+          files=(
+            "artifacts/release/packages/TlsClient.$RELEASE_VERSION.nupkg"
+            "artifacts/release/packages/TlsClient.$RELEASE_VERSION.snupkg"
+            "artifacts/release/sbom/_manifest/spdx_2.2/manifest.spdx.json"
+            "artifacts/release/sbom-validation.json"
+          )
+
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "${files[@]}" --clobber
+            exit 0
+          fi
+
+          arguments=(--verify-tag --title "TlsClient $RELEASE_VERSION")
+          notes_file="docs/releases/$RELEASE_VERSION.md"
+          if [[ -f "$notes_file" ]]; then
+            arguments+=(--notes-file "$notes_file")
+          else
+            arguments+=(--generate-notes)
+          fi
+          if [[ "$RELEASE_VERSION" == *-* ]]; then
+            arguments+=(--prerelease)
+          fi
+
+          gh release create "$tag" "${files[@]}" "${arguments[@]}"

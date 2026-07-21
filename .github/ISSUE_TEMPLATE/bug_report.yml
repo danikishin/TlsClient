@@ -1,0 +1,68 @@
+name: Bug report
+description: Report reproducible incorrect behavior in TlsClient
+title: "[Bug]: "
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Do not include vulnerabilities or secrets here; use the private process in SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: TlsClient and SharpTls versions
+      placeholder: TlsClient 0.5.0-preview.1, SharpTls 0.9.0-preview.4
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: .NET 9.0.2, macOS 15 arm64
+    validations:
+      required: true
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Area
+      options:
+        - HTTP/1.1
+        - HTTP/2 or HPACK
+        - TLS profile or fingerprint
+        - Pooling, DNS, or connectivity
+        - Proxy
+        - Cookies or redirects
+        - Streaming, retry, or policy
+        - Packaging or documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include a small program or public endpoint and the exact exception. Remove credentials and private traffic.
+      render: csharp
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I reproduced this on the latest preview.
+          required: true
+        - label: This report contains no vulnerability details, credentials, private keys, session state, or private traffic.
+          required: true

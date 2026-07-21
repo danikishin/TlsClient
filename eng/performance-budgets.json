@@ -1,0 +1,18 @@
+{
+  "http1-parse": {
+    "minimumOperationsPerSecond": 10000,
+    "maximumBytesPerOperation": 18000
+  },
+  "http1-serialize": {
+    "minimumOperationsPerSecond": 25000,
+    "maximumBytesPerOperation": 8000
+  },
+  "hpack-decode": {
+    "minimumOperationsPerSecond": 50000,
+    "maximumBytesPerOperation": 5000
+  },
+  "clienthello-diagnostics": {
+    "minimumOperationsPerSecond": 5000,
+    "maximumBytesPerOperation": 24000
+  }
+}
