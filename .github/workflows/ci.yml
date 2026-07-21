@@ -16,7 +16,6 @@ permissions:
 
 env:
   PACKAGE_VERSION: 0.5.0-preview.1
-  DOTNET_ROLL_FORWARD: Disable
 
 jobs:
   build:
@@ -36,6 +35,8 @@ jobs:
       - run: dotnet restore TlsClient.slnx --locked-mode
       - run: dotnet format whitespace --folder . --verify-no-changes
       - run: dotnet build TlsClient.slnx --configuration Release --no-restore
+        env:
+          DOTNET_ROLL_FORWARD: Disable
       - run: >-
           dotnet test TlsClient.slnx --configuration Release --no-build
           --logger "trx;LogFileName=${{ matrix.os }}.trx"

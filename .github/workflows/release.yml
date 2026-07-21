@@ -20,9 +20,6 @@ permissions:
   attestations: write
   artifact-metadata: write
 
-env:
-  DOTNET_ROLL_FORWARD: Disable
-
 jobs:
   build-attest:
     runs-on: ubuntu-latest
@@ -73,6 +70,8 @@ jobs:
       - run: dotnet restore TlsClient.slnx --locked-mode
       - run: dotnet format whitespace --folder . --verify-no-changes
       - run: dotnet build TlsClient.slnx --configuration Release --no-restore
+        env:
+          DOTNET_ROLL_FORWARD: Disable
       - run: dotnet test TlsClient.slnx --configuration Release --no-build
       - name: Pack twice
         run: |
