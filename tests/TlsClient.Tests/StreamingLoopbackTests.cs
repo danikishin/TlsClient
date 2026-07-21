@@ -62,12 +62,15 @@ public sealed class StreamingLoopbackTests
         using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(15));
         var releaseDestination = new TaskCompletionSource(
             TaskCreationOptions.RunContinuationsAsynchronously);
+        var responseConsumed = new TaskCompletionSource(
+            TaskCreationOptions.RunContinuationsAsynchronously);
         await using var destination = new BlockingWriteStream(releaseDestination.Task);
         var serverTask = RunHttp2BackpressureServerAsync(
             listener,
             credential,
             destination.WriteStarted,
             releaseDestination,
+            responseConsumed.Task,
             timeout.Token);
         await using var session = CreateSession(certificates, TlsHttpVersionPolicy.Http2Only);
 
@@ -76,8 +79,9 @@ public sealed class StreamingLoopbackTests
             destination,
             cancellationToken: timeout.Token);
         await destination.WriteStarted.WaitAsync(timeout.Token);
-        var sawEarlyWindowUpdate = await serverTask.WaitAsync(timeout.Token);
         var response = await responseTask;
+        responseConsumed.TrySetResult();
+        var sawEarlyWindowUpdate = await serverTask.WaitAsync(timeout.Token);
 
         Assert.False(sawEarlyWindowUpdate);
         Assert.Equal("backpressure"u8.ToArray(), destination.ToArray());
@@ -299,6 +303,7 @@ public sealed class StreamingLoopbackTests
         TlsServerCertificate credential,
         Task writeStarted,
         TaskCompletionSource releaseDestination,
+        Task responseConsumed,
         CancellationToken cancellationToken)
     {
         using var client = await listener.AcceptTcpClientAsync(cancellationToken);
@@ -363,6 +368,7 @@ public sealed class StreamingLoopbackTests
             [],
             cancellationToken);
         await stream.FlushAsync(cancellationToken);
+        await responseConsumed.WaitAsync(cancellationToken);
         listener.Stop();
         return sawEarlyWindowUpdate;
     }
