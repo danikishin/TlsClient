@@ -29,7 +29,7 @@ There is no `SslStream`, native TLS library, P/Invoke, helper process, or opaque
 binary in this package.
 
 > [!IMPORTANT]
-> `0.5.0-preview.1` implements the complete pre-1.0 roadmap, including HTTP/2,
+> `0.5.0-preview.1` implements the complete 0.5 roadmap, including HTTP/2,
 > hostile-peer bounds, fuzz/performance gates, and reproducible release artifacts.
 > Preview status means the public API may still change before `1.0.0`; it does not mean
 > protocol validation or certificate security is disabled.

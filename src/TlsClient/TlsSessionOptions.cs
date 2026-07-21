@@ -153,7 +153,8 @@ public sealed class TlsSessionOptions
 
     /// <summary>
     /// Gets or sets an advanced SharpTls hook invoked for every new connection after
-    /// session defaults are applied. SharpTls does not permit trust-validation bypass.
+    /// session defaults are applied. The pinned SharpTls version does not expose
+    /// trust-validation bypass.
     /// </summary>
     public Action<CustomTlsClientOptions>? ConfigureTls { get; set; }
 

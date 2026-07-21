@@ -12,8 +12,9 @@ with the convenience of Python-Tls-Client and a smaller, strongly typed API.
 
 - **SharpTls is the only TLS engine.** No `SslStream`, OpenSSL, BoringSSL, P/Invoke,
   subprocess, or platform TLS fallback.
-- **Secure by default.** Certificate and hostname validation remain mandatory.
-  Advanced validation may add policy, but never bypass trust validation.
+- **Secure by default.** Certificate and hostname validation are enabled by default.
+  Explicit custom-validation or disable controls will be surfaced only through a
+  supported SharpTls API, with no second TLS implementation inside TlsClient.
 - **Easy first request, deep escape hatches.** The common path is a three-line
   `TlsSession`; advanced callers can supply any SharpTls `ClientHelloProfile` and
   configure the underlying `CustomTlsClientOptions`.
@@ -153,9 +154,16 @@ a direct client run.)
   pooling, proxy, cookie, and redirect logic. The reviewed scope, resolved findings,
   regression tests, and release evidence are recorded in `docs/PROTOCOL-REVIEW.md`.
 
+## Dependency-gated follow-up
+
+- [ ] Expose SharpTls-backed custom certificate/hostname validation, including an
+  explicit unsafe disable option, after SharpTls publishes the required managed API.
+  This is not a gate for `0.5.0-preview.1`; TlsClient will not emulate it outside the
+  TLS engine in the meantime.
+
 ## Explicit non-goals
 
-- Disabling certificate or hostname validation.
+- Implementing certificate or hostname validation outside SharpTls.
 - Pretending a JA3 string is a complete browser fingerprint.
 - Claiming HTTP/3 support without a real QUIC transport.
 - Hidden retries of non-idempotent or non-replayable requests.
@@ -171,4 +179,5 @@ a direct client run.)
 | `0.3.0-preview` | Pooling, streaming, proxy, and retry depth |
 | `0.4.0-preview` | Fingerprint laboratory and browser personas |
 | `0.5.0-preview` | ECH/DNS, persistence, diagnostics, HTTP/3 evaluation |
+| `0.6.0-preview` | SharpTls-backed validation controls when available; compatibility hardening |
 | `1.0.0` | Audited, fuzzed, API-stable release |

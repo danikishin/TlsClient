@@ -40,12 +40,16 @@ try
             await VerifySourceLinkAsync(symbolsPath, fetchSources: true);
             Console.WriteLine($"Fetched and verified Source Link documents in {symbolsPath}");
             break;
+        case ["pdbinfo", var symbolsPath]:
+            PrintPdbInfo(symbolsPath);
+            break;
         default:
             Console.Error.WriteLine(
                 "Usage:\n" +
                 "  TlsClient.PackageTool normalize <package> [package ...]\n" +
                 "  TlsClient.PackageTool verify <package.nupkg> <package.snupkg>\n" +
                 "  TlsClient.PackageTool compare <first-package> <second-package>\n" +
+                "  TlsClient.PackageTool pdbinfo <package.snupkg>\n" +
                 "  TlsClient.PackageTool sourcelink <package.snupkg> [--fetch]");
             Environment.ExitCode = 2;
             break;
@@ -91,6 +95,10 @@ void Normalize(string path)
     entries["_rels/.rels"] = CanonicalizeRelationships(
         GetRequiredBytes(entries, "_rels/.rels"),
         originalCorePath);
+    foreach (var entryPath in entries.Keys.ToArray())
+    {
+        entries[entryPath] = CanonicalizeGeneratedText(entryPath, entries[entryPath]);
+    }
 
     var temporaryPath = package.FullName + ".canonical.tmp";
     if (File.Exists(temporaryPath))
@@ -126,6 +134,25 @@ void Normalize(string path)
             File.Delete(temporaryPath);
         }
     }
+}
+
+static byte[] CanonicalizeGeneratedText(string path, byte[] content)
+{
+    if (!path.EndsWith(".nuspec", StringComparison.OrdinalIgnoreCase) &&
+        !path.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) &&
+        !path.EndsWith(".rels", StringComparison.OrdinalIgnoreCase) &&
+        !path.EndsWith(".psmdcp", StringComparison.OrdinalIgnoreCase))
+    {
+        return content;
+    }
+
+    var preamble = Encoding.UTF8.GetPreamble();
+    var text = content.AsSpan().StartsWith(preamble)
+        ? Encoding.UTF8.GetString(content, preamble.Length, content.Length - preamble.Length)
+        : new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true)
+            .GetString(content);
+    return new UTF8Encoding(encoderShouldEmitUTF8Identifier: false)
+        .GetBytes(text.ReplaceLineEndings("\n"));
 }
 
 void Verify(string packagePath, string symbolsPath)
@@ -354,6 +381,24 @@ static async Task VerifySourceLinkAsync(string symbolsPath, bool fetchSources)
     if (mappedCount == 0)
     {
         throw new InvalidDataException("Source Link does not map any portable PDB document.");
+    }
+}
+
+static void PrintPdbInfo(string symbolsPath)
+{
+    using var symbols = ZipFile.OpenRead(symbolsPath);
+    var pdbBytes = ReadEntry(GetRequiredEntry(symbols, "lib/net9.0/TlsClient.pdb"));
+    using var pdbStream = new MemoryStream(pdbBytes, writable: false);
+    using var provider = MetadataReaderProvider.FromPortablePdbStream(pdbStream);
+    var reader = provider.GetMetadataReader();
+
+    Console.WriteLine($"PDB ID: {Convert.ToHexString(reader.DebugMetadataHeader!.Id.ToArray())}");
+    foreach (var handle in reader.Documents)
+    {
+        var document = reader.GetDocument(handle);
+        Console.WriteLine(
+            $"{reader.GetString(document.Name)}\t" +
+            Convert.ToHexString(reader.GetBlobBytes(document.Hash)));
     }
 }
 

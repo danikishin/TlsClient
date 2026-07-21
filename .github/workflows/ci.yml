@@ -16,6 +16,7 @@ permissions:
 
 env:
   PACKAGE_VERSION: 0.5.0-preview.1
+  DOTNET_ROLL_FORWARD: Disable
 
 jobs:
   build:

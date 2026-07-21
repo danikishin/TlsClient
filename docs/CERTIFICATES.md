@@ -69,5 +69,6 @@ peer chain may match. Wildcards cover exactly one label below the suffix but not
 apex. Pin comparisons are fixed-time and temporary digests are zeroized.
 
 Pinning is not a replacement for PKIX, hostname validation, revocation policy, or secure
-certificate deployment. TlsClient intentionally has no callback that can accept an
-otherwise invalid certificate.
+certificate deployment. This release has no SharpTls callback that can accept an
+otherwise invalid certificate; a future TlsClient option is dependency-gated on that
+capability being added to SharpTls.

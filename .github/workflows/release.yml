@@ -20,6 +20,9 @@ permissions:
   attestations: write
   artifact-metadata: write
 
+env:
+  DOTNET_ROLL_FORWARD: Disable
+
 jobs:
   build-attest:
     runs-on: ubuntu-latest
