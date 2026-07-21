@@ -238,6 +238,7 @@ public sealed class RetryPolicyLoopbackTests
                     bodyText,
                     linked.Token);
             }
+            await WaitForClientCloseAsync(stream, linked.Token);
             _listener.Stop();
             return expectedRequests;
         }
@@ -353,6 +354,23 @@ public sealed class RetryPolicyLoopbackTests
     {
         await stream.WriteAsync(Encoding.ASCII.GetBytes(value), cancellationToken);
         await stream.FlushAsync(cancellationToken);
+    }
+
+    private static async ValueTask WaitForClientCloseAsync(
+        Stream stream,
+        CancellationToken cancellationToken)
+    {
+        var buffer = new byte[1];
+        try
+        {
+            while (await stream.ReadAsync(buffer, cancellationToken) != 0)
+            {
+            }
+        }
+        catch (IOException)
+        {
+            // A peer that consumed the response may close without a TLS close_notify.
+        }
     }
 
     private sealed class CountingReadStream(byte[] data) : Stream

@@ -220,7 +220,7 @@ public static class TlsProfileCatalog
             "The digest covers SharpTls's versioned, secret-free specification JSON. " +
             "It is a metadata regression key, not a hash of a live ClientHello: random, " +
             "key-share, binder, and per-connection GREASE bytes are intentionally absent.");
-        return builder.ToString();
+        return builder.ToString().ReplaceLineEndings("\n");
     }
 
     private static string Join(IReadOnlyList<string> values) =>
