@@ -1,3 +1,4 @@
+using System.Buffers.Binary;
 using System.IO.Compression;
 using System.Reflection.Metadata;
 using System.Security.Cryptography;
@@ -124,6 +125,7 @@ void Normalize(string path)
                 stream.Write(item.Value);
             }
         }
+        CanonicalizeZipPlatform(temporaryPath);
 
         File.Move(temporaryPath, package.FullName, overwrite: true);
     }
@@ -134,6 +136,71 @@ void Normalize(string path)
             File.Delete(temporaryPath);
         }
     }
+}
+
+static void CanonicalizeZipPlatform(string path)
+{
+    const uint centralDirectorySignature = 0x02014b50;
+    const uint endOfCentralDirectorySignature = 0x06054b50;
+    const int endOfCentralDirectoryLength = 22;
+    const int maximumCommentLength = ushort.MaxValue;
+
+    var bytes = File.ReadAllBytes(path);
+    var minimumOffset = Math.Max(
+        0,
+        bytes.Length - endOfCentralDirectoryLength - maximumCommentLength);
+    var endOffset = -1;
+    for (var offset = bytes.Length - endOfCentralDirectoryLength;
+         offset >= minimumOffset;
+         offset--)
+    {
+        if (BinaryPrimitives.ReadUInt32LittleEndian(bytes.AsSpan(offset)) ==
+            endOfCentralDirectorySignature)
+        {
+            endOffset = offset;
+            break;
+        }
+    }
+    if (endOffset < 0)
+    {
+        throw new InvalidDataException("ZIP end-of-central-directory record is missing.");
+    }
+
+    var record = bytes.AsSpan(endOffset);
+    var entryCount = BinaryPrimitives.ReadUInt16LittleEndian(record[10..]);
+    var centralDirectorySize = BinaryPrimitives.ReadUInt32LittleEndian(record[12..]);
+    var centralDirectoryOffset = BinaryPrimitives.ReadUInt32LittleEndian(record[16..]);
+    if (entryCount == ushort.MaxValue ||
+        centralDirectorySize == uint.MaxValue ||
+        centralDirectoryOffset == uint.MaxValue)
+    {
+        throw new InvalidDataException("ZIP64 packages are not supported by the normalizer.");
+    }
+
+    var current = checked((int)centralDirectoryOffset);
+    for (var index = 0; index < entryCount; index++)
+    {
+        var header = bytes.AsSpan(current);
+        if (header.Length < 46 ||
+            BinaryPrimitives.ReadUInt32LittleEndian(header) != centralDirectorySignature)
+        {
+            throw new InvalidDataException("ZIP central directory is malformed.");
+        }
+
+        // The high byte of "version made by" is the host system. Zero makes the
+        // archive metadata identical on Windows and Unix without file-mode claims.
+        header[5] = 0;
+        var fileNameLength = BinaryPrimitives.ReadUInt16LittleEndian(header[28..]);
+        var extraLength = BinaryPrimitives.ReadUInt16LittleEndian(header[30..]);
+        var commentLength = BinaryPrimitives.ReadUInt16LittleEndian(header[32..]);
+        current = checked(current + 46 + fileNameLength + extraLength + commentLength);
+    }
+
+    if (current != checked((int)(centralDirectoryOffset + centralDirectorySize)))
+    {
+        throw new InvalidDataException("ZIP central-directory size does not match its entries.");
+    }
+    File.WriteAllBytes(path, bytes);
 }
 
 static byte[] CanonicalizeGeneratedText(string path, byte[] content)
