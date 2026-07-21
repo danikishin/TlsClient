@@ -351,6 +351,7 @@ public sealed class Http2LoopbackTests
             new byte[800],
             cancellationToken);
         await stream.FlushAsync(cancellationToken);
+        await WaitForClientCloseAsync(stream, cancellationToken);
         listener.Stop();
     }
 
@@ -704,6 +705,23 @@ public sealed class Http2LoopbackTests
                 throw new EndOfStreamException();
             }
             offset += read;
+        }
+    }
+
+    private static async ValueTask WaitForClientCloseAsync(
+        Stream stream,
+        CancellationToken cancellationToken)
+    {
+        var buffer = new byte[1];
+        try
+        {
+            while (await stream.ReadAsync(buffer, cancellationToken) != 0)
+            {
+            }
+        }
+        catch (IOException)
+        {
+            // A protocol-error close does not have to include TLS close_notify.
         }
     }
 
